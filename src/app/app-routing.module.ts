@@ -6,9 +6,7 @@ import { LayoutComponent } from './layout/layout.component';
 
 export const appRoutes: Route[] = [
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
-
   { path: 'signed-in-redirect', pathMatch: 'full', redirectTo: 'dashboard' },
-
   // Auth routes for guests
   {
     path: '',
@@ -23,7 +21,6 @@ export const appRoutes: Route[] = [
     ]
   },
 
-
   // Admin routes
   {
     path: '',
@@ -31,7 +28,6 @@ export const appRoutes: Route[] = [
     canActivateChild: [AuthGuard],
     component: LayoutComponent,
     children: [
-
       // Dashboard
       { path: 'dashboard', loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule) },
 
