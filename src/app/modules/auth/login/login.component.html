@@ -1,0 +1,30 @@
+
+            <!-- Sign in form -->
+            <form
+                class="mt-8"   [formGroup]="signInForm"
+                #signInNgForm="ngForm">
+
+                <input
+                id="email"
+                matInput
+                [formControlName]="'email'">
+
+                <input
+                        id="password"
+                        matInput
+                        type="password"
+                        [formControlName]="'password'"
+                        #passwordField>
+
+             
+                <!-- Submit button -->
+                <button
+                    class="fuse-mat-button-large w-full mt-6"
+                    [disabled]="signInForm.disabled"
+                    (click)="signIn()">
+                    <span *ngIf="!signInForm.disabled">
+                        Sign in
+                    </span>
+                </button>
+
+            </form>
