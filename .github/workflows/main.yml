@@ -1,40 +1,37 @@
-name: Build and deploy
-on:
-  push:
-    branches: [master]
-  workflow_dispatch:
+name: Build and deploy to IIS
 
+on: 
+  push:
+    branches: 
+      - master
+      
 jobs:
-  build:
-    name: Build ⛏
+  web-deploy:
+
+    name: Deploy Carbon frontend
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@master
-      - name: Install dependencies
-        run: npm ci
-      - name: Build dependencies
-        run: npm run build --prod
-      - name: Archive production artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: dist
-          path: dist/enpass-spa
-  deploy:
-    name: Deploy 🚀
-    needs: build
-    runs-on: ubuntu-latest
-    steps: 
-      - name: Push Build to Releases
-        uses: ncipollo/release-action@v1
-      - name: Download artifact
-        uses: actions/download-artifact@master
-        with: 
-          artifacts: "dist/enpass-spa/*"
-      - name: Sync files to hosting
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
-        with: 
-          server: 212.84.178.5
-          server-dir: /Carbon-Frontend/
-          username: carbon
-          password: H!y*d9U5&TY
+    - name: Get latest code
+      uses: actions/checkout@v2.3.2
+
+    - name: Use Node.js 14 LTS
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+      
+    - name: Install NPM Modules
+      run: npm install
+
+    - name: Build Project
+      run: npm run build --prod
+    
+    - name: Sync Files
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      with:
+        server: 212.84.178.5
+        username: carbon
+        password: H!y*d9U5&TY
+        local-dir: ./dist/
+        server-dir: ./Carbon-Frontend/
+        dangerous-clean-slate: true
